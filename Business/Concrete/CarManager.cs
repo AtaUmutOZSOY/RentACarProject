@@ -22,13 +22,21 @@ namespace Business.Concrete
         }
         public Result Add(Car car)
         {
-            var existBrand = _brandDal.Get(x => x.BrandId == car.BrandId);
-            
-            if (existBrand != null)
+            if (DateTime.Now.Hour < 9  && DateTime.Now.Hour > 18.30)
             {
-                _carDal.Add(car);
+                return new ErrorResult(Messages.CarMassages.UnsuccedCarAdd);
             }
-            return new SuccessResult(Messages.CarMassages.SuccedCarAdd);
+            else
+            {
+                var existBrand = _brandDal.Get(x => x.BrandId == car.BrandId);
+
+                if (existBrand != null)
+                {
+                    _carDal.Add(car);
+                }
+                return new SuccessResult(Messages.CarMassages.SuccedCarAdd);
+
+            }
 
         }
 
