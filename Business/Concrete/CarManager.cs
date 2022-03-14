@@ -20,7 +20,7 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        public Result Add(Car car)
+        public IResult Add(Car car)
         {
             if (DateTime.Now.Hour < 9  && DateTime.Now.Hour > 18.30)
             {
@@ -57,11 +57,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
-        public IDataResult<Car> GetBrandByCarName(Car car)
-        {
-            
-            return new SuccessDataResult<Car>(_carDal.Get(x => x.CarName == car.CarName));
-        }
+       
 
         public IResult Update(Car brand)
         {
