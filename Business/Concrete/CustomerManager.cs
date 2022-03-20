@@ -15,36 +15,38 @@ namespace Business.Concrete
     public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
+        
         public CustomerManager(ICustomerDal customerDal)
         {
             _customerDal = customerDal;
         }
+
         public IResult Add(Customer customer)
         {
-            _customerDal.Add(customer);
-            return new SuccessResult(Messages.BrandMessages.SuccedBrandAdd);
+           _customerDal.Add(customer);
+            return new SuccessResult("Ekleme Başarılı");
         }
 
         public IResult Delete(Customer customer)
         {
             _customerDal.Delete(customer);
-            return new SuccessResult(Messages.BrandMessages.SuccedBrandRemove);
+            return new SuccessResult("Silme Başarılı");
         }
 
-        public IDataResult<List<Customer>> GetAllCustomers()
+        public IDataResult<List<Customer>> GetAllColor()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
-        public IDataResult<Customer> GetCustomer(Customer customer)
+        public IDataResult<Customer> GetBrandByCustomerId(int id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(x=>x.UserId == customer.UserId));
+            return new SuccessDataResult<Customer>(_customerDal.Get(x=>x.CustomerId == id));
         }
-       
+
         public IResult Update(Customer customer)
         {
             _customerDal.Update(customer);
-            return new SuccessResult(Messages.BrandMessages.SuccedBrandUpdate);
+            return new SuccessResult("Güncelleme Başarılı");
         }
     }
 }

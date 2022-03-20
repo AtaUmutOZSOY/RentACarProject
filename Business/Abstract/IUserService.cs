@@ -15,7 +15,7 @@ namespace Business.Abstract
         IResult Add(User user);
         IResult Delete(User user);
         IResult Update(User user);
-        IDataResult<List<User>> GetAllBrands();
-        IDataResult<User> GetBrandByUserName(User userName);
+        IDataResult<List<User>> GetAllUsers();
+        IDataResult<User> GetBrandByUserId(int id);
     }
 }

@@ -15,16 +15,21 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
-        public IResult Delete(Rental rental)
+        public RentalManager(IRentalDal rentalDal)
         {
-            _rentalDal.Delete(rental);
-            return new SuccessResult(Messages.BrandMessages.UnsuccedBrandAdd); //Düzenlenecek
+            _rentalDal = rentalDal;
         }
 
-        public IResult Create(Rental rental)
+        public IResult Add(Rental rental)
         {
             _rentalDal.Add(rental);
-            return new SuccessResult(Messages.BrandMessages.SuccedBrandAdd);
+            return new SuccessResult("Ekleme Başarılı");
+        }
+
+        public IResult Delete(Rental rental)
+        {
+           _rentalDal.Delete(rental);
+            return new SuccessResult("Silme Başarılı");
         }
 
         public IDataResult<List<Rental>> GetAllRentals()
@@ -32,15 +37,15 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
-        public IDataResult<Rental> GetRental(Rental rental)
+        public IDataResult<Rental> GetBrandByRentalId(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(x=>x.RentalId == rental.RentalId));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(x => x.RentalId == id));
         }
 
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
-            return new SuccessResult(Messages.BrandMessages.SuccedBrandUpdate);
+            return new SuccessResult("Güncelleme Başarılı");
         }
     }
 }

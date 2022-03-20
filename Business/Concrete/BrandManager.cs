@@ -81,10 +81,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
-        public IDataResult<Brand> GetBrandByBrandName(Brand brandName)
+        public IDataResult<Brand> GetBrandByBrandId(int id)
         {
-            var brandNametoLs =  _brandDal.Get(x=>x.BrandName == brandName.BrandName);
-            return new SuccessDataResult<Brand>(brandNametoLs.BrandName);
+            var brand =  _brandDal.Get(x=>x.BrandId == id);
+            return new SuccessDataResult<Brand>(brand.BrandName);
         }
     }
 }

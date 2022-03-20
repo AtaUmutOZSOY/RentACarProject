@@ -26,38 +26,30 @@ namespace Business.Concrete
 
         public IResult Add(User user)
         {
-            var existUser = _userDal.Get(x=>x.UserId == user.UserId);
-
-            if (existUser == null)
-            {
-                _userDal.Add(user);
-                return new SuccessResult("Kullanıcı Başarılı Bir Şekilde Eklendi");
-            }
-            else
-            {
-
-                return new ErrorResult("Kullanıcı Adı Zaten Var");
-            }
+            _userDal.Add(user);
+            return new SuccessResult("Ekleme Başarılı");
         }
 
-        public IResult Delete(User brand)
+        public IResult Delete(User user)
         {
-            throw new NotImplementedException();
+            _userDal.Delete(user);
+            return new SuccessResult("Silme Başarılı");
         }
 
-        public IDataResult<List<User>> GetAllBrands()
+        public IResult Update(User user)
         {
-            throw new NotImplementedException();
+            _userDal.Update(user);
+            return new SuccessResult("Güncelleme Başarılı");
         }
 
-        public IDataResult<User> GetBrandByUserName(User userName)
+        public IDataResult<List<User>> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
 
-        public IResult Update(User brand)
+        public IDataResult<User> GetBrandByUserId(int id)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<User>(_userDal.Get(x => x.UserId == id ));
         }
     }
 }

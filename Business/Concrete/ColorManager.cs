@@ -19,43 +19,34 @@ namespace Business.Concrete
         {
 
         }
+
         public IResult Add(Color color)
         {
-            if (color.ColorName.Length > 2)
-            {
-                _colorDal.Add(color);
-                return new SuccessResult(Messages.ColorMassages.SuccedColorAdd);
-            }
-            else
-            {
-                return new ErrorResult(Messages.ColorMassages.UnsuccedColorAdd);
-            }
-           
-            
+            _colorDal.Add(color);
+            return new SuccessResult("Renk Başarılı bir şekilde eklenmiştir");
         }
 
         public IResult Delete(Color color)
         {
            _colorDal.Delete(color);
-            return new SuccessResult(Messages.ColorMassages.SuccedColorRemove);
-        }
-
-        public IDataResult<List<Color>> GetAllBrands()
-        {
-            return new SuccessDataResult<List<Color>>(_colorDal.GetAll()); 
-        }
-
-        public IDataResult<Color> GetBrandByColorName(Color color)
-        {
-            
-            return new SuccessDataResult<Color>(_colorDal.Get(x => x.ColorName == color.ColorName));
+            return new SuccessResult("Renk Başarılı Bir Şekilde Silinmiştir");
         }
 
         public IResult Update(Color color)
         {
             _colorDal.Update(color);
+            return new SuccessResult("Güncelleme Başarılı");
 
-            return new SuccessResult(Messages.ColorMassages.SuccedColorUpdate);
+        }
+
+        public IDataResult<List<Color>> GetAllColor()
+        {
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
+        }
+
+        public IDataResult<Color> GetBrandByColorId(int id)
+        {
+            return new SuccessDataResult<Color>(_colorDal.Get(x=>x.ColorId == id));
         }
     }
 }
