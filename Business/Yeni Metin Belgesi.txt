@@ -1,2 +1,0 @@
-Business ve Service ler IResult ve IDataResult interfacelerine göre tekrardan yazýlacak.
-Sql düzenlenecek.

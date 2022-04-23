@@ -1,26 +1,25 @@
 ﻿using Business.Abstract;
-using Core.Utilities.Results.Abstract;
-using Entities.Concrete;
+using Entity.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandsController : ControllerBase
+    public class CustomersController : ControllerBase
     {
-        IBrandService _brandService;
+        ICustomerService _customerService;
 
-        public BrandsController(IBrandService brandService)
+        public CustomersController(ICustomerService customerService)
         {
-            _brandService = brandService;
+            _customerService = customerService;
         }
-        
+
         [HttpPost("AddBrand")]
-        public IActionResult Add(Brand brand)
+        public IActionResult Add(Customer customer)
         {
-            var result = _brandService.Add(brand);
+            var result = _customerService.Add(customer);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -31,10 +30,10 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete("DeleteBrand")]
-        public IActionResult Delete(Brand brand)
+        [HttpDelete("DeleteRental")]
+        public IActionResult Delete(Customer customer)
         {
-            var result = _brandService.Delete(brand);
+            var result = _customerService.Delete(customer);
             if (result.Success)
             {
                 return Ok("Silme Başarılı");
@@ -44,10 +43,10 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("UpdateBrands")]
-        public IActionResult Update(Brand brand)
+        [HttpPost("UpdateRentals")]
+        public IActionResult Update(Customer customer)
         {
-            var result = _brandService.Update(brand);
+            var result = _customerService.Update(customer);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -58,11 +57,11 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("GetAllBrands")]
+        [HttpGet("GetAllRentals")]
 
-       public IActionResult GetAll() 
+        public IActionResult GetAll()
         {
-           var result =  _brandService.GetAllBrands();
+            var result = _customerService.GetAllColor();
             if (result.Success)
             {
                 return Ok(result);
@@ -71,24 +70,22 @@ namespace WebAPI.Controllers
             {
                 return BadRequest();
             }
-           
+
 
         }
-        [HttpGet("GetBrandsByBrandId")]
+        [HttpGet("GetRentalByRentalId")]
 
-        public IActionResult GetByBrandId(int id)
+        public IActionResult Ge(int id)
         {
-            var result = _brandService.GetBrandByBrandId(id);
+            var result = _customerService.GetCustomerByCustomerId(id);
             if (result.Success)
             {
-                return Ok(result.Data) ;
+                return Ok(result.Data);
             }
             else
             {
                 return NotFound();
             }
         }
-
-       
     }
 }

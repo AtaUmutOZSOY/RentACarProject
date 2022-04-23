@@ -1,9 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +20,19 @@ namespace Business.Concrete
     {
         IBrandDal _brandDal;
         ICarDal _carDal;
-        public CarManager(IBrandDal brandDal)
+        public CarManager(ICarDal carDal)
         {
-            _brandDal = brandDal;
+            _carDal = carDal;
         }
-
+        //2:14:19
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
+
+            ValidationTool.Validate(new CarValidator(),car);
+            
             _carDal.Add(car);
+
             return new SuccessResult("Araç Başarılı Bir Şekilde Eklenmiştir");
         }
 
