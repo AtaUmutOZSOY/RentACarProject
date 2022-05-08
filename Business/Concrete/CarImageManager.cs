@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.BusinessRules;
 using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -22,42 +23,66 @@ namespace Business.Concrete
         }
         public IResult Add(CarImage carImage)
         {
-            var result = BusinessRules.Run(CheckCarImageCount(carImage));
-            if (result.Success)
+            var carImageValidation = BusinessRules.Run(CheckCarImageCount(carImage));
+
+            if (carImageValidation.Success)
             {
                 _carImageDal.Add(carImage);
-                return new SuccessResult(Messages.SuccedAdd);
+                return new SuccessResult(Messages.ActionMessages.SuccedAdd);
 
             }
             else
             {
-                return new ErrorResult(Messages.UnsucceddAdd);
+                return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
             }
         }
 
         public IResult Delete(CarImage carImage)
         {
-            _carImageDal.Delete(carImage);
-            return new SuccessResult(Messages.SuccedRemove);
+            var isExist = _carImageDal.GetAll();
+            var isExistCount = isExist.Count();
+            if (isExistCount != 0)
+            {
+                return new SuccessResult(Messages.ActionMessages.SuccedRemove);
+            }
+            return new ErrorResult(Messages.ActionMessages.UnsucceddRemove);   
         }
 
         public IDataResult<List<CarImage>> GetAllCarImages()
         {
             var result = _carImageDal.GetAll();
-            return new SuccessDataResult<List<CarImage>>();
+            if (result != null)
+            {
+                return new SuccessDataResult<List<CarImage>>(result.ToList());
+            }
+            return null;
         }
+
 
         public IDataResult<CarImage> GetCarImageById(int id)
         {
+
             var result = _carImageDal.Get(x => x.Id == id);
-            return new SuccessDataResult<CarImage>(result);
+            if (result != null)
+            {
+                return new SuccessDataResult<CarImage>(result);
+            }
+            return null;
+
         }
 
         public IResult Update(CarImage carImage)
         {
-            _carImageDal.Update(carImage);
-            return new SuccessResult(Messages.SuccedUpdate);
+            var IsExist = BusinessRulesValidator.Run(CheckExistCarImage(carImage.Id));
+
+            if (IsExist.Success == true)
+            {
+                _carImageDal.Update(carImage);
+                return new SuccessResult(Messages.ActionMessages.SuccedUpdate);
+            }
+            return new ErrorResult(Messages.ActionMessages.UnsuccedUpdate);
         }
+
 
         /// <summary>
         /// This function count car images. 16.04.2022
@@ -74,11 +99,6 @@ namespace Business.Concrete
             return null;
         }
 
-        public IDataResult<List<CarImage>> ListCarImages(CarImage carImage)
-        {
-            var result = _carImageDal.GetListOfCarImagesByCarId(carImage);
-            return new SuccessDataResult<List<CarImage>>(result.Data);
-        }
         public IDataResult<List<CarImage>> ShowDefaultImageofCar(CarImage carImage)
         {
             var result = BusinessRules.Run(CheckCarImageCount(carImage));
@@ -87,6 +107,16 @@ namespace Business.Concrete
                 
             }
             return null;
+        }
+
+        public IDataResult<CarImage> CheckExistCarImage(int id)
+        {
+            var isExist = _carImageDal.Get(x=>x.Id == id);
+            if (isExist == null)
+            {
+                return new ErrorDataResult<CarImage>();
+            }
+            return new SuccessDataResult<CarImage>();
         }
     }
 }

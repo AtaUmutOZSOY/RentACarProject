@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Business.ValidationRules.BusinessRules;
+using Business.ValidationRules.BusinessRules.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results.Abstract;
@@ -19,88 +22,77 @@ namespace Business.Concrete
     public class BrandManager : IBrandService
     {
         IBrandDal _brandDal;
-        public BrandManager(IBrandDal brandDal)
+        IBrandBusinessRules _brandBusinessRules;
+        public BrandManager(IBrandDal brandDal, IBrandBusinessRules brandBusinessRules)
         {
             _brandDal = brandDal;
+            _brandBusinessRules = brandBusinessRules;   
         }
-        public BrandManager()
-        {
-
-        }
-        //validation Eklemeye,silmeye,listelemeye vb gibi işlemler yapmaya çalıştığımız varlıkların
-        //iş kurallarına dahil edilebilmesi için bu varlıkların veya nesnelerin yapısal olarak uygun
-        //olup olmadığını kontrol etmeye validation denir.
-        //BusinessRules
-
+        
         [ValidationAspect(typeof(BrandValidator))]
 
         public IResult Add(Brand brand)
         {
-            var context = new ValidationContext<Brand>(brand);
-            //BrandValidator
-
-            if (brand.BrandName.Length > 2)
+            var IsExistBrand = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandId));
+            if (IsExistBrand.Success)
             {
-                _brandDal.Add(brand);
-                return new SuccessResult(Messages.SuccedAdd);
+                return new SuccessResult(Messages.ActionMessages.SuccedAdd);
             }
-            else
-            {
-                return new ErrorResult(Messages.UnsucceddAdd);
-            }
+            return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
         }
-        //Mesai saatleri içerisinde silme işlemi yapılabilir bunu yaz. Bu iş kuralı.
+        
         
         
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Delete(Brand brand)
         {
-            //validasyon
-            var existEntity = _brandDal.Get(x => x.BrandId == brand.BrandId);
+            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandId));
 
-            if (existEntity != null)
+            if (isBrandExist.Success)
             {
                 _brandDal.Delete(brand);
-                return new SuccessResult(Messages.SuccedRemove);
+                return new SuccessResult(Messages.ActionMessages.SuccedRemove);
             }
-            else
-            {
-                _brandDal.Delete(brand);
-                return new ErrorResult(Messages.UnsucceddRemove);
-            }
+            return new ErrorResult(Messages.ActionMessages.UnsucceddRemove);
         }
 
 
 
         [ValidationAspect(typeof(BrandValidator))]
 
+        [SecuredOperation("Brand.add,admin")]
+
         public IResult Update(Brand brand)
         {
-            var existEntity = _brandDal.Get(x => x.BrandId == brand.BrandId);
-
-
-            if (existEntity != null)
+            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandId));
+            if (isBrandExist.Success)
             {
                 _brandDal.Update(brand);
-                return new SuccessResult(Messages.SuccedUpdate);
+                return new SuccessResult(Messages.ActionMessages.SuccedUpdate);
             }
-            else
-            {
-                return new ErrorResult(Messages.UnsuccedUpdate);
-            }
+            return new ErrorResult(Messages.ActionMessages.UnsuccedUpdate);
         }
 
 
         public IDataResult<List<Brand>> GetAllBrands()
         {
-
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
+            var brandList = _brandDal.GetAll();
+            if (brandList == null)
+            {
+                return null;
+            }
+            return new SuccessDataResult<List<Brand>>(brandList);
         }
+
 
         public IDataResult<Brand> GetBrandByBrandId(int id)
         {
-            var brand =  _brandDal.Get(x=>x.BrandId == id);
-            return new SuccessDataResult<Brand>(brand);
+            var brandById =  _brandDal.Get(x=>x.BrandId == id);
+            if (brandById != null)
+            {
+                return new SuccessDataResult<Brand>(brandById);
+            }
+            return null;
         }
 
     }

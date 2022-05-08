@@ -20,42 +20,36 @@ namespace Business.Concrete
     {
         IBrandDal _brandDal;
         ICarDal _carDal;
-        public CarManager(ICarDal carDal)
+
+        public CarManager(IBrandDal brandDal, ICarDal carDal)
         {
+            _brandDal = brandDal;
             _carDal = carDal;
         }
-        //2:14:19
-        [ValidationAspect(typeof(CarValidator))]
+
         public IResult Add(Car car)
         {
-
-            ValidationTool.Validate(new CarValidator(),car);
-            
-            _carDal.Add(car);
-
-            return new SuccessResult("Araç Başarılı Bir Şekilde Eklenmiştir");
+          
         }
 
         public IResult Delete(Car car)
         {
-            _carDal.Delete(car);
-            return new SuccessResult("Araç Başarılı Bir Şekilde Silinmiştir");
+            throw new NotImplementedException();
         }
 
         public IDataResult<List<Car>> GetAllCars()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+            throw new NotImplementedException();
         }
 
         public IDataResult<Car> GetCarByCarId(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(x=>x.CarId == id));
+            throw new NotImplementedException();
         }
 
         public IResult Update(Car car)
         {
-            _carDal.Update(car);
-            return new SuccessResult("Araç Başarılı Bir Şekilde Güncellenmiştir");
+            throw new NotImplementedException();
         }
     }
 }

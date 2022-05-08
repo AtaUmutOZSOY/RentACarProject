@@ -8,10 +8,14 @@ namespace Core.Utilities.Results.Concrete
 {
     public class ErrorResult : Result
     {
-        public ErrorResult() : base(false)
+        public ErrorResult(bool error) : base(false)
         {
         }
 
+        public ErrorResult(bool success, string massage):base(false, massage)
+        {
+
+        }
         public ErrorResult(string massage) : base(false, massage)
         {
         }
