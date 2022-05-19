@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.BusinessRules;
 using Core.Entity.Concrete;
@@ -20,6 +21,7 @@ namespace Business.Concrete
         {
             _userDal = userDal;
         }
+        
         public IResult Add(User user)
         { 
             var existUser = BusinessRulesValidator.Run(CheckExistUserByEmail(user.Email));

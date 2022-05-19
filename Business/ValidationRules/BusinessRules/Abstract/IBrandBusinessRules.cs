@@ -9,6 +9,7 @@ namespace Business.ValidationRules.BusinessRules.Abstract
 {
     public interface IBrandBusinessRules
     {
-        IResult CheckExistBrand(int id);
+        IResult CheckExistBrand(string brandName);
+        IResult CheckExistBrandForUpdate(string brandName);
     }
 }

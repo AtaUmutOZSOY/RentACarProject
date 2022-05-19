@@ -29,12 +29,16 @@ namespace Business.Concrete
             _tokenHelper = tokenHelper;
             _authBusinessRules = authBusinessRules;
         }
-
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        {
+            _userService = userService;
+            _tokenHelper = tokenHelper;
+        }
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             var IsExistValidation = BusinessRulesValidator.Run(_authBusinessRules.CheckUserExist(userForRegisterDto.Email));
 
-            if (!IsExistValidation.Success)
+            if (IsExistValidation == null)
             {
                 byte[] passwordHash, passwordSalt;
                 HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -45,33 +49,41 @@ namespace Business.Concrete
                     LastName = userForRegisterDto.LastName,
                     PasswordHash = passwordHash,
                     PasswordSalt = passwordSalt,
-                    Status = true
+                    Status = true,
+                    FindexPoint = 1500
                 };
                 _userService.Add(user);
-                return new SuccessDataResult<User>(Messages.AuthMessages.SucceedUserRegistiration)
+                return new SuccessDataResult<User>(user , true, Messages.AuthMessages.SucceedUserRegistiration);
             }
             return new ErrorDataResult<User>(IsExistValidation.Message);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
-            var isUserExist = BusinessRulesValidator.Run(_authBusinessRules.CheckUserExist(userForLoginDto.Email));
-            
-            if (!isUserExist.Success)
+            var isUserExist = _authBusinessRules.CheckUserExistForLogin(userForLoginDto.Email);
+
+            if (isUserExist.Data == null)
             {
                 return new ErrorDataResult<User>(Messages.UserMassages.UserNotFound);
             }
-
-            var userData = _userService.GetByEmail(userForLoginDto.Email); 
-            
-
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userData.Data.PasswordHash, userData.Data.PasswordSalt))
+              
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, isUserExist.Data.PasswordHash, isUserExist.Data.PasswordSalt))
             {
                 return new ErrorDataResult<User>(Messages.AuthMessages.RegistirationDenied);
             }
-
-            return new SuccessDataResult<User>(userData.Data, true, Messages.AuthMessages.SuccessLogin);
+            return new SuccessDataResult<User>(isUserExist.Data, true, Messages.AuthMessages.SuccessLogin);
         }
+              
+              
+
+
+
+
+    
+
+
+
+
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);

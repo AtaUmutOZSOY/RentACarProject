@@ -10,6 +10,12 @@ namespace Business.Constants
 {
     public static class Messages
     {
+        public static class ColorMassages
+        {
+            public static string ColorExistMassage = "Bu İsimde Bir Renk Mevcut";
+
+        }
+
         public static class AuthMessages
         {
             public static string UnSucceedLogIn = "Kullanıcı Adı veya Parola Yanlış";
@@ -18,6 +24,7 @@ namespace Business.Constants
             public static string RegistirationDenied = "Kullanıcı Adı veya Parola Yanlış";
             public static string SuccessLogin = "Giriş Başarılı";
             public static string AccessTokenCreated = "Token Başarılı Şekilde Oluşturuldu";
+            public static string UserNotExist = "Bu E-mail Adresine Kayıtlı Bir Kullanıcı Yok";
 
         }
         
@@ -41,6 +48,7 @@ namespace Business.Constants
             public static string UnsuccedUpdate = "Güncelleme Başarısız";
             public static string UnsucceddAdd = "Ekleme Başarısız";
             public static string UnsucceddRemove = "Silme Başarısız";
+            public static string NotExist = "Bu İsimde Bir Değer Bulunamadı";
 
         }
     }

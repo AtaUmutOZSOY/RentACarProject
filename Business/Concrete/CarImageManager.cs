@@ -29,19 +29,19 @@ namespace Business.Concrete
             {
                 _carImageDal.Add(carImage);
                 return new SuccessResult(Messages.ActionMessages.SuccedAdd);
-
             }
-            else
-            {
-                return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
-            }
+            return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
         }
+
+            
+            
+            
 
         public IResult Delete(CarImage carImage)
         {
-            var isExist = _carImageDal.GetAll();
-            var isExistCount = isExist.Count();
-            if (isExistCount != 0)
+            var existImages = _carImageDal.GetAll();
+            var existImagesCount = existImages.Count();
+            if (existImagesCount != 0)
             {
                 return new SuccessResult(Messages.ActionMessages.SuccedRemove);
             }
@@ -99,15 +99,15 @@ namespace Business.Concrete
             return null;
         }
 
-        public IDataResult<List<CarImage>> ShowDefaultImageofCar(CarImage carImage)
-        {
-            var result = BusinessRules.Run(CheckCarImageCount(carImage));
-            if (result == null)
-            {
-                
-            }
-            return null;
-        }
+        //public IDataResult<List<CarImage>> ShowDefaultImageOfCar(CarImage carImage)
+        //{
+        //    var result = BusinessRules.Run(CheckCarImageCount(carImage));
+        //    if (result == null)
+        //    {
+        //        ShowDefaultImage();   
+        //    }
+        //    return null;
+        //}
 
         public IDataResult<CarImage> CheckExistCarImage(int id)
         {
@@ -118,5 +118,11 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<CarImage>();
         }
+
+        //public IDataResult<CarImage> ShowDefaultImage()
+        //{
+        //   var defaultImage =  _carImageDal.GetDefaultCarImage();
+        //    return new SuccessDataResult<CarImage>(defaultImage.Data);
+        //}
     }
 }

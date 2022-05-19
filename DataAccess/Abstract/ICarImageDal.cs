@@ -13,5 +13,6 @@ namespace DataAccess.Abstract
     {
         int CarImageCount(CarImage carImage);
         IDataResult<List<CarImage>> GetListOfCarImagesByCarId(CarImage carImage);
+        //IDataResult<CarImage> GetDefaultCarImage();
     }
 }

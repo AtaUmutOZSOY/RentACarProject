@@ -13,14 +13,25 @@ namespace Business.ValidationRules.BusinessRules.Concrete
     public class BrandBusinessRules : IBrandBusinessRules
     {
         IBrandDal _brandDal;
-        public IResult CheckExistBrand(int id)
+        public BrandBusinessRules(IBrandDal brandDal)
         {
-            var existBrandResult = _brandDal.Get(x=>x.BrandId == id);
-            if (existBrandResult == null)
+            _brandDal = brandDal;
+        }
+        public IResult CheckExistBrand(string brandName)
+        {
+            var existBrandResult = _brandDal.Get(x=>x.BrandName== brandName);
+            if (existBrandResult != null)
             {
-                return new SuccessResult(true);
+                return new ErrorResult(false);
             }
-            return new ErrorResult(false);
+            return new SuccessResult(true);
+                
+        }
+
+        public IResult CheckExistBrandForUpdate(string brandName)
+        {
+            var exisBrandResult = _brandDal.Get(x=>x.BrandName == brandName);
+            return new SuccessResult(true);
         }
     }
 }

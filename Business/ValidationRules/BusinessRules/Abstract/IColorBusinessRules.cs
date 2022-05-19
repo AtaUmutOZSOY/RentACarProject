@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Utilities.Results.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace Business.ValidationRules.BusinessRules.Abstract
 {
     public interface IColorBusinessRules
     {
+        IResult CheckColor(string colorName);
     }
 }

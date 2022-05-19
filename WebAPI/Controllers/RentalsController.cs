@@ -22,11 +22,11 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
+            
+            
+            
 
         [HttpDelete("DeleteRental")]
         public IActionResult Delete(Rental rental)
@@ -36,11 +36,11 @@ namespace WebAPI.Controllers
             {
                 return Ok("Silme Başarılı");
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
+         
         }
+         
+         
         [HttpPost("UpdateRentals")]
         public IActionResult Update(Rental rental)
         {
@@ -49,11 +49,11 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
+            
+            
+            
 
         [HttpGet("GetAllRentals")]
 
@@ -64,13 +64,13 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            else
-            {
-                return BadRequest();
-            }
-
-
+            return BadRequest();
         }
+         
+         
+         
+
+
         [HttpGet("GetRentalByRentalId")]
 
         public IActionResult Ge(int id)
@@ -80,10 +80,8 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Data);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
+         
         }
     }
 }

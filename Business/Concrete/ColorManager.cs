@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.BusinessRules.Abstract;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
@@ -11,9 +12,11 @@ namespace Business.Concrete
     public class ColorManager : IColorService
     {
         IColorDal _colorDal;
-        public ColorManager(IColorDal colorDal)
+        IColorBusinessRules _colorBusinessRules;
+        public ColorManager(IColorDal colorDal, IColorBusinessRules colorBusinessRules)
         {
             _colorDal = colorDal;
+            _colorBusinessRules = colorBusinessRules;
         }
         public ColorManager()
         {
@@ -22,31 +25,45 @@ namespace Business.Concrete
 
         public IResult Add(Color color)
         {
-            _colorDal.Add(color);
-            return new SuccessResult("Renk Başarılı bir şekilde eklenmiştir");
+            var notExistColor = _colorBusinessRules.CheckColor(color.ColorName);
+            if (notExistColor.Success)
+            {
+                _colorDal.Add(color);
+                return new SuccessResult(Messages.ActionMessages.SuccedAdd);
+            }
+            return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
+            
         }
 
         public IResult Delete(Color color)
         {
-           _colorDal.Delete(color);
-            return new SuccessResult("Renk Başarılı Bir Şekilde Silinmiştir");
+            var isExistColor = _colorBusinessRules.CheckColor(color.ColorName);
+            if (isExistColor.Success)
+            {
+                _colorDal.Delete(color);
+                return new SuccessResult(Messages.ActionMessages.SuccedRemove);
+            }
+            return new ErrorResult(Messages.ActionMessages.UnsucceddRemove);
         }
 
         public IResult Update(Color color)
         {
-            _colorDal.Update(color);
-            return new SuccessResult("Güncelleme Başarılı");
-
+            throw new System.NotImplementedException();
         }
 
         public IDataResult<List<Color>> GetAllColor()
         {
-            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
+            var colors = _colorDal.GetAll();
+            if (colors.Count == 0)
+            {
+                return null;
+            }
+            return new SuccessDataResult<List<Color>>(colors);
         }
 
         public IDataResult<Color> GetColorByColorId(int id)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(x=>x.ColorId == id));
+            throw new System.NotImplementedException();
         }
     }
 }

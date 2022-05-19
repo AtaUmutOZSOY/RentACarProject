@@ -11,6 +11,7 @@ namespace Business.ValidationRules.BusinessRules.Abstract
     public interface IAuthBusinessRules
     {
         IResult CheckUserExist(string email);
-       
+        IDataResult<User> CheckUserExistForLogin(string email);
+
     }
 }

@@ -16,5 +16,6 @@ namespace Business.Abstract
         IResult Update(CarImage carImage);
         IDataResult<List<CarImage>> GetAllCarImages();
         IDataResult<CarImage> GetCarImageById(int id);
+        //IDataResult<CarImage> ShowDefaultImage();
     }
 }

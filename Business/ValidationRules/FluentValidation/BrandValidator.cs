@@ -14,7 +14,7 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(p=>p.BrandId).NotNull();
             RuleFor(p=>p.BrandName).NotNull();
-            RuleFor(p => p.BrandName).Length(2);
+            
         }
     }
 }

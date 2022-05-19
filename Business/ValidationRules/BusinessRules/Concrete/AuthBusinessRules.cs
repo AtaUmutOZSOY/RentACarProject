@@ -29,5 +29,26 @@ namespace Business.ValidationRules.BusinessRules.Concrete
             return new ErrorResult(Messages.UserMassages.UserAlreadyExist);
         }
 
+        public IDataResult<User> CheckUserExistForLogin(string email)
+        {
+            var userCheckForLogin = _userDal.Get(x => x.Email == email);
+            if (userCheckForLogin != null)
+            {
+                return new SuccessDataResult<User>(userCheckForLogin, true);
+            }
+            return new ErrorDataResult<User>(Messages.UserMassages.UserNotFound);
+        }
+
+        //public IResult CheckUserExistForLogin(string email)
+        //{
+        //   var userCheckForLoginResult = _userDal.Get(x=>x.Email == email);
+        //    if (userCheckForLoginResult != null)
+        //    {
+        //        return new SuccessResult(Messages.AuthMessages.SuccessLogin);
+        //    }
+        //    return new ErrorResult(Messages.AuthMessages.UserNotExist);
+        //}
+
+
     }
 }

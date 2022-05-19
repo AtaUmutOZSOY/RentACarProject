@@ -4,7 +4,9 @@ using Business.Constants;
 using Business.ValidationRules.BusinessRules;
 using Business.ValidationRules.BusinessRules.Abstract;
 using Business.ValidationRules.FluentValidation;
+
 using Core.Aspects.Autofac.Validation;
+using Core.Entity.DTOs;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
@@ -28,52 +30,62 @@ namespace Business.Concrete
             _brandDal = brandDal;
             _brandBusinessRules = brandBusinessRules;   
         }
-        
-        [ValidationAspect(typeof(BrandValidator))]
-
-        public IResult Add(Brand brand)
+        public BrandManager()
         {
-            var IsExistBrand = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandId));
-            if (IsExistBrand.Success)
-            {
+
+        }
+        
+    
+
+        
+        public IResult Add(BrandDTO brandDto)
+        {
+            var brand = new Brand();
+            brand.BrandName = brandDto.BrandName;
+            var IsExistBrand = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandName));
+            if (IsExistBrand == null)
+            {   
+                _brandDal.Add(brand);
                 return new SuccessResult(Messages.ActionMessages.SuccedAdd);
+
             }
             return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
         }
         
-        
-        
-        [ValidationAspect(typeof(BrandValidator))]
-        public IResult Delete(Brand brand)
+        //[ValidationAspect(typeof(BrandValidator))]
+        public IResult Delete(BrandDTO brandDto)
         {
-            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandId));
-
-            if (isBrandExist.Success)
+            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brandDto.BrandName));
+            var brand = new Brand();
+            brand.BrandName = brandDto?.BrandName;
+            if (!isBrandExist.Success)
             {
                 _brandDal.Delete(brand);
                 return new SuccessResult(Messages.ActionMessages.SuccedRemove);
             }
-            return new ErrorResult(Messages.ActionMessages.UnsucceddRemove);
+            return new ErrorResult(Messages.ActionMessages.NotExist);
         }
 
 
 
         [ValidationAspect(typeof(BrandValidator))]
 
-        [SecuredOperation("Brand.add,admin")]
+        //[SecuredOperation("Brand.add,admin")]
 
-        public IResult Update(Brand brand)
+        public IResult Update(BrandDTO brandDto)
         {
-            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandId));
+            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrandForUpdate(brandDto.BrandName));
             if (isBrandExist.Success)
             {
+                var brand = new Brand();
+                brand.BrandName = brandDto.BrandName;
                 _brandDal.Update(brand);
                 return new SuccessResult(Messages.ActionMessages.SuccedUpdate);
             }
             return new ErrorResult(Messages.ActionMessages.UnsuccedUpdate);
         }
 
-
+        
         public IDataResult<List<Brand>> GetAllBrands()
         {
             var brandList = _brandDal.GetAll();
@@ -85,15 +97,15 @@ namespace Business.Concrete
         }
 
 
-        public IDataResult<Brand> GetBrandByBrandId(int id)
-        {
-            var brandById =  _brandDal.Get(x=>x.BrandId == id);
-            if (brandById != null)
-            {
-                return new SuccessDataResult<Brand>(brandById);
-            }
-            return null;
-        }
+        //public IDataResult<Brand> GetBrandByBrandId(int id)
+        //{
+        //    var brandById =  _brandDal.Get(x=>x.BrandId == id);
+        //    if (brandById != null)
+        //    {
+        //        return new SuccessDataResult<Brand>(brandById);
+        //    }
+        //    return null;
+        //}
 
     }
 }

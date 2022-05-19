@@ -44,15 +44,12 @@ namespace Core.Utilities.Security.Jwt
             SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
         {
             var jwt = new JwtSecurityToken(
-
-                 issuer: tokenOptions.Issuer,
+                issuer: tokenOptions.Issuer,
                 audience: tokenOptions.Audience,
                 expires: _accessTokenExpiration,
                 notBefore: DateTime.Now,
                 claims: SetClaims(user, operationClaims),
                 signingCredentials: signingCredentials
-
-
                 ) ;
             return jwt ;
         }

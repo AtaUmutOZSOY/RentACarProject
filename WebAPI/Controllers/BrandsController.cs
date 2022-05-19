@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
+using Core.Entity.DTOs;
 using Core.Utilities.Results.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
@@ -18,44 +20,35 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("AddBrand")]
-        public IActionResult Add(Brand brand)
+        public IActionResult Add(BrandDTO brand)
         {
             var result = _brandService.Add(brand);
             if (result.Success)
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest(result.Message);
         }
 
         [HttpDelete("DeleteBrand")]
-        public IActionResult Delete(Brand brand)
+        public IActionResult Delete(BrandDTO brandDto)
         {
-            var result = _brandService.Delete(brand);
-            if (result.Success)
-            {
-                return Ok("Silme Başarılı");
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-        [HttpPost("UpdateBrands")]
-        public IActionResult Update(Brand brand)
-        {
-            var result = _brandService.Update(brand);
+            var result = _brandService.Delete(brandDto);
             if (result.Success)
             {
                 return Ok(result.Message);
             }
-            else
+            return NotFound(result.Message);
+        }
+        [HttpPost("UpdateBrands")]
+        public IActionResult Update(BrandDTO brandDto)
+        {
+            var result = _brandService.Update(brandDto);
+            if (result.Success)
             {
-                return NotFound();
+                return Ok(result.Message);
             }
+            return NotFound(result.Message);
         }
 
         [HttpGet("GetAllBrands")]
@@ -65,29 +58,25 @@ namespace WebAPI.Controllers
            var result =  _brandService.GetAllBrands();
             if (result.Success)
             {
-                return Ok(result);
+                return Ok(result.Data);
             }
-            else
-            {
-                return BadRequest();
-            }
-           
+            return null;
 
         }
-        [HttpGet("GetBrandsByBrandId")]
+        //[HttpGet("GetBrandsByBrandId")]
 
-        public IActionResult GetByBrandId(int id)
-        {
-            var result = _brandService.GetBrandByBrandId(id);
-            if (result.Success)
-            {
-                return Ok(result.Data) ;
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //public IActionResult GetByBrandId(int id)
+        //{
+        //    var result = _brandService.GetBrandByBrandId(id);
+        //    if (result.Success)
+        //    {
+        //        return Ok(result.Data) ;
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
        
     }

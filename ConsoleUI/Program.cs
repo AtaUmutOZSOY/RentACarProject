@@ -9,13 +9,13 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            var result = brandManager.GetAllBrands();
-            foreach (var item in result.Data)
-            {
-                Console.WriteLine(item.BrandName);
-            }
-            Console.WriteLine(result.Data);            //BrandManager brandManager = new BrandManager(new EfBrandDal());
+            //BrandManager brandManager = new BrandManager(new EfBrandDal());
+            //var result = brandManager.GetAllBrands();
+            //foreach (var item in result.Data)
+            //{
+            //    Console.WriteLine(item.BrandName);
+            //}
+            //Console.WriteLine(result.Data);            //BrandManager brandManager = new BrandManager(new EfBrandDal());
             //var result = brandManager.GetAllBrands();
             //Brand brand = new Brand();
             //brand.BrandName = "Volvo";

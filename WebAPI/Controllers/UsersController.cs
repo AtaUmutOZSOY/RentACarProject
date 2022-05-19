@@ -45,12 +45,12 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-
-                return BadRequest(result.Message);
-            }
+            return BadRequest(result.Message);
         }
+            
+            
+
+            
         
         [HttpPost("UpdateUser")]
          public IActionResult UpdateUser(User user)
@@ -60,11 +60,11 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return BadRequest(result.Message);
-            }
+            return BadRequest(result.Message);
         }
+         
+         
+         
 
         [HttpGet("GetAllUsers")]
         
@@ -90,15 +90,15 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Data);
             }
-            else
-            {
-                return BadRequest(result.Message);
-            }
+            return BadRequest(result.Message);
         }
+    }
+}
+            
+            
+            
+            
         
 
        
 
-            
-    }
-}

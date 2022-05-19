@@ -2,6 +2,7 @@
 using Entity.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace WebAPI.Controllers
 {
@@ -23,10 +24,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return BadRequest(result.Message);
-            }
+            return BadRequest(result.Message);
         }
 
         [HttpGet("GetCarImage")]
@@ -37,11 +35,11 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
+            
         }
+            
+            
         [HttpDelete("DeleteCarImage")]
         public IActionResult DeleteCarImage (CarImage carImage)
         {
@@ -70,18 +68,21 @@ namespace WebAPI.Controllers
             }
         }
         
-        [HttpGet("GetAllCarImages")]
-        public IActionResult GetAllCarImages()
-        {
-            var result = _carImageService.GetAllCarImages();
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //[HttpGet("GetAllCarImages")]
+        //public IActionResult GetAllCarImages()
+        //{
+        //    var carImages = _carImageService.GetAllCarImages();
+        //    var carImagesCount = carImages.Data.Count();
+            
+        //    if (carImagesCount == 0)
+        //    {
+        //        var defaultCarImage = _carImageService.ShowDefaultImage();
+        //        return Ok(defaultCarImage);
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
     }
 }

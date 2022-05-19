@@ -1,13 +1,10 @@
 ﻿using Core.DataAccess.Abstract;
 using Core.Entity.Abstract;
-using Core.Utilities.Results.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.DataAccess.Concrete
 {

@@ -23,7 +23,14 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        
+        //public IDataResult<CarImage> GetDefaultCarImage()
+        //{
+        //    using (RentACarProjectContext context = new RentACarProjectContext())
+        //    {
+        //        var result = context.CarImages.Find(x => x.Id == 0);
+        //        return result;
+        //    }
+        //}
 
         public IDataResult<List<CarImage>> GetListOfCarImagesByCarId(CarImage carImage)
         {

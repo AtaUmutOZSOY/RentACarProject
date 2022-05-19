@@ -23,10 +23,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return BadRequest(result.Message);
-            }
+            return BadRequest(result.Message);
         }
         [HttpDelete("DeleteColor")]
         public IActionResult Delete(Color color)
@@ -36,11 +33,11 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Message);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
+            
+            
+            
         [HttpPost("UpdateColor")]
         public IActionResult Update(Color color)
         {
@@ -50,11 +47,8 @@ namespace WebAPI.Controllers
                 return Ok(result.Message);
 
             }
-            else
-            {
-                return BadRequest(result.Message);
-            }
-        }
+            return BadRequest(result.Message);
+         }
         [HttpGet("GetColorList")]
         public IActionResult GetColors()
         {
@@ -63,10 +57,8 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Data);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
+            
         }
         
         [HttpGet("GetColorByColorId")]
@@ -77,10 +69,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result.Data);
             }
-            else
-            {
-                return BadRequest(result.Message);
-            }
+            return BadRequest(result.Message);
         }
     }
 }
