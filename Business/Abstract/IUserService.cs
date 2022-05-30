@@ -10,16 +10,11 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IUserService
+    public interface IUserService: IBaseService<User>
     {
-        IResult Add(User user);
-        IResult Delete(User user);
-        IResult Update(User user);
-        IDataResult<List<User>> GetAllUsers();
-        IDataResult<User> GetUserById(int id);
+        IDataResult<User> GetUser(string email);
         IDataResult<List<OperationClaim>> GetClaims(User user);
-        IDataResult<User> GetByEmail(string email);
-        
+
 
     }
 }

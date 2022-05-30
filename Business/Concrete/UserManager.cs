@@ -14,55 +14,17 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class UserManager : IUserService
+    public class UserManager : BaseManager<User>, IUserService
     {
         IUserDal _userDal;
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
         }
-        
-        public IResult Add(User user)
-        { 
-            var existUser = BusinessRulesValidator.Run(CheckExistUserByEmail(user.Email));
-            if (existUser == null)
-            {
-                _userDal.Add(user);
-                return new SuccessResult(Messages.ActionMessages.SuccedAdd);
-            }
-            return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
-        }
-
-        public IResult Delete(User user)
-        {
-            var existUser = BusinessRulesValidator.Run(CheckExistUserByEmail(user.Email));
-            if (existUser != null)
-            {
-                _userDal.Delete(user);
-                return new SuccessResult(Messages.UserMassages.UserDeleted);
-            }
-            return new ErrorResult(Messages.UserMassages.UserNotFound);
-        }
-
-        public IDataResult<List<User>> GetAllUsers()
-        {
-            var allUserList = _userDal.GetAll();
-            return new SuccessDataResult<List<User>>(allUserList);
-        }
-
-        public IDataResult<User> GetByEmail(string email)
-        {
-            var queryResult = _userDal.Get(x=>x.Email == email);
-            if (queryResult == null)
-            {
-                return null;
-            }
-            return new SuccessDataResult<User>(queryResult);
-        }
 
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
-            var existUser = BusinessRulesValidator.Run(CheckExistUserByEmail(user.Email));
+            var existUser = BusinessRulesValidator.Run(CheckExistUser(user.Id));
             if (existUser != null)
             {
                 var claims = _userDal.GetClaims(user);
@@ -71,43 +33,25 @@ namespace Business.Concrete
             return null;
         }
 
-        public IDataResult<User> GetUserById(int id)
+        public IDataResult<User> GetUser(string email)
         {
-            throw new NotImplementedException();
-        }
-
-        public IResult Update(User user)
-        {
-            var existUser = BusinessRulesValidator.Run(CheckExistUserByEmail(user.Email));
-            if (existUser.Success)
+            var user = _userDal.Get(x=>x.Email == email);
+            if (user != null )
             {
-                _userDal.Update(user);
-                return new SuccessResult(Messages.ActionMessages.SuccedUpdate);
+                return new SuccessDataResult<User>(user);
             }
-            return new ErrorResult(Messages.ActionMessages.UnsuccedUpdate);
+            return null;
         }
 
-        /*
-         Business Rules
-         */
-
-
-        /// <summary>
-        /// Check user via Email 
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        private IResult CheckExistUserByEmail(string email)
+        public IResult CheckExistUser(int id)
         {
-            var existUser = _userDal.Get(x=>x.Email == email);
-            if (existUser != null)
+            var result = _userDal.Get(x => x.Id == id);
+            if (result != null)
             {
-                return new ErrorResult(Messages.UserMassages.UserAlreadyExist);
+                return new ErrorResult();
             }
-            return new SuccessResult(null);
+            return new SuccessResult();
         }
-
-        
 
     }
 }

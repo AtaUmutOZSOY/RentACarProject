@@ -1,6 +1,7 @@
 ﻿using Core.Entity.DTOs;
 using Core.Utilities.Results.Abstract;
 using Entities.Concrete;
+using Entity.DTOs.BrandDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,9 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IBrandService
+    public interface IBrandService:IBaseService<Brand>
     {
-        IResult Add(BrandDTO brandDto);
-        IResult Delete(BrandDTO brand);
-        IResult Update(BrandDTO brand);
-        IDataResult<List<Brand>> GetAllBrands();
+        
        
     }
 }

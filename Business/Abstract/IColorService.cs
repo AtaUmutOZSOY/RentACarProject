@@ -9,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IColorService
+    public interface IColorService: IBaseService<Color>
     {
-        IResult Add(Color color);
-        IResult Delete(Color color);
-        IResult Update(Color color);
-        IDataResult<List<Color>> GetAllColor();
-        IDataResult<Color> GetColorByColorId(int id);
+        
+       
     }
 }

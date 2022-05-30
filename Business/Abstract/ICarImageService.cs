@@ -9,13 +9,8 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICarImageService
+    public interface ICarImageService:IBaseService<CarImage>
     {
-        IResult Add(CarImage carImage);
-        IResult Delete(CarImage carImage);
-        IResult Update(CarImage carImage);
-        IDataResult<List<CarImage>> GetAllCarImages();
-        IDataResult<CarImage> GetCarImageById(int id);
-        //IDataResult<CarImage> ShowDefaultImage();
+        
     }
 }

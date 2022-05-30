@@ -9,6 +9,8 @@ namespace Core.Utilities.Results.Concrete
 {
     public class Result : IResult
     {
+        
+        
         public Result(bool success, string massage):this(success)
         {
             Message = massage;

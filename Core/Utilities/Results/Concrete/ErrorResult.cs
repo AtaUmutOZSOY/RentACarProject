@@ -8,6 +8,10 @@ namespace Core.Utilities.Results.Concrete
 {
     public class ErrorResult : Result
     {
+        public ErrorResult():base(false)
+        {
+
+        }
         public ErrorResult(bool error) : base(false)
         {
         }

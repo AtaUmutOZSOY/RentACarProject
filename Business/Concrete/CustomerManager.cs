@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.BusinessRules;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
@@ -12,41 +13,26 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class CustomerManager : ICustomerService
+    public class CustomerManager : BaseManager<Customer>,ICustomerService
     {
         ICustomerDal _customerDal;
+
         
         public CustomerManager(ICustomerDal customerDal)
         {
             _customerDal = customerDal;
         }
 
-        public IResult Add(Customer customer)
-        {
-           _customerDal.Add(customer);
-            return new SuccessResult("Ekleme Başarılı");
-        }
+    
 
-        public IResult Delete(Customer customer)
+        public IResult CheckCustomerByCustomerId(int customerId)
         {
-            _customerDal.Delete(customer);
-            return new SuccessResult("Silme Başarılı");
-        }
-
-        public IDataResult<List<Customer>> GetAllColor()
-        {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
-        }
-
-        public IDataResult<Customer> GetCustomerByCustomerId(int id)
-        {
-            return new SuccessDataResult<Customer>(_customerDal.Get(x=>x.CustomerId == id));
-        }
-
-        public IResult Update(Customer customer)
-        {
-            _customerDal.Update(customer);
-            return new SuccessResult("Güncelleme Başarılı");
+            var result = _customerDal.Get(x => x.CustomerId == customerId);
+            if (result != null)
+            {
+                return new ErrorResult();
+            }
+            return null;
         }
     }
 }

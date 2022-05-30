@@ -33,7 +33,10 @@ namespace Business.Constants
         {
             
         }
-        
+        public static class CarImagesMassages
+        {
+            public static string CarImageCountsError = "Araç Resmi Sayısı En Fazla 5 Adet Olabilir";
+        }
         public static class UserMassages
         {
             public static string UserDeleted = "Kullanıcı Başarılı Bir Şekilde Silindi";
@@ -46,10 +49,10 @@ namespace Business.Constants
             public static string SuccedRemove = "Silme Başarılı";
             public static string SuccedUpdate = "Güncelleme Başarılı";
             public static string UnsuccedUpdate = "Güncelleme Başarısız";
-            public static string UnsucceddAdd = "Ekleme Başarısız";
+            public static string UnsucceddAdd = "Ekleme Başarısız.";
             public static string UnsucceddRemove = "Silme Başarısız";
             public static string NotExist = "Bu İsimde Bir Değer Bulunamadı";
-
+            public static string AlreadyExist= "Zaten Mevcut" ;
         }
     }
 }

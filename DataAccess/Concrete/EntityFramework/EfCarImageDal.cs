@@ -6,6 +6,7 @@ using Entity.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,11 +24,11 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        //public IDataResult<CarImage> GetDefaultCarImage()
+        //public IDataResult<CarImage> GetDefaultCarImage(Expression<Func<CarImage>>filter,bool bo) 
         //{
         //    using (RentACarProjectContext context = new RentACarProjectContext())
         //    {
-        //        var result = context.CarImages.Find(x => x.Id == 0);
+        //        var result = context.CarImages.SingleOrDefault(filter,filter);
         //        return result;
         //    }
         //}

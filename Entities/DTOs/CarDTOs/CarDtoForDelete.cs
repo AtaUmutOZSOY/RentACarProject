@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entity.DTOs
+namespace Entity.DTOs.CarDTOs
 {
-    public class BrandDTO:IDto
+    public class CarDtoForDelete:IDto
     {
-        public string CurrentBrandName { get; set; }
-        public string NewBrandName { get; set; }
+        public int CarId { get; set; }
     }
 }

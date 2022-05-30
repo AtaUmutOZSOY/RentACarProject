@@ -1,6 +1,5 @@
 ﻿using Business.Abstract;
 using Entity.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -14,7 +13,7 @@ namespace WebAPI.Controllers
         {
             _rentalService = rentalService;
         }
-        [HttpPost("AddBrand")]
+        [HttpPost("addRental")]
         public IActionResult Add(Rental rental)
         {
             var result = _rentalService.Add(rental);
@@ -28,7 +27,7 @@ namespace WebAPI.Controllers
             
             
 
-        [HttpDelete("DeleteRental")]
+        [HttpDelete("deleteRental")]
         public IActionResult Delete(Rental rental)
         {
             var result = _rentalService.Delete(rental);
@@ -41,7 +40,7 @@ namespace WebAPI.Controllers
         }
          
          
-        [HttpPost("UpdateRentals")]
+        [HttpPost("updateRental")]
         public IActionResult Update(Rental rental)
         {
             var result = _rentalService.Update(rental);
@@ -50,38 +49,6 @@ namespace WebAPI.Controllers
                 return Ok(result.Message);
             }
             return NotFound();
-        }
-            
-            
-            
-
-        [HttpGet("GetAllRentals")]
-
-        public IActionResult GetAll()
-        {
-            var result = _rentalService.GetAllRentals();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-         
-         
-         
-
-
-        [HttpGet("GetRentalByRentalId")]
-
-        public IActionResult Ge(int id)
-        {
-            var result = _rentalService.GetRentalByRentalId(id);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-            return NotFound();
-         
-        }
+        }        
     }
 }

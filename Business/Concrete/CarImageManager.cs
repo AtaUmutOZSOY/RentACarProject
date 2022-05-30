@@ -14,115 +14,34 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class CarImageManager : ICarImageService
+    public class CarImageManager : BaseManager<CarImage>,ICarImageService
     {
         ICarImageDal _carImageDal;
         public CarImageManager(ICarImageDal carImageDal)
         {
             _carImageDal = carImageDal;
         }
-        public IResult Add(CarImage carImage)
-        {
-            var carImageValidation = BusinessRules.Run(CheckCarImageCount(carImage));
+        
+        
 
-            if (carImageValidation.Success)
+        public IResult CheckCarImageCount(int carId)
+        {
+            var result = _carImageDal.GetAll(x => x.CarId == carId);
+            if (result.Count<5)
             {
-                _carImageDal.Add(carImage);
-                return new SuccessResult(Messages.ActionMessages.SuccedAdd);
+                return new SuccessResult();
             }
-            return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
+            return new ErrorResult(Messages.CarImagesMassages.CarImageCountsError);
         }
-
-            
-            
-            
-
-        public IResult Delete(CarImage carImage)
+        //Mesaj için kod refactoring yapılmalı 
+        public IResult CheckExistCarImageById(int id)
         {
-            var existImages = _carImageDal.GetAll();
-            var existImagesCount = existImages.Count();
-            if (existImagesCount != 0)
-            {
-                return new SuccessResult(Messages.ActionMessages.SuccedRemove);
-            }
-            return new ErrorResult(Messages.ActionMessages.UnsucceddRemove);   
-        }
-
-        public IDataResult<List<CarImage>> GetAllCarImages()
-        {
-            var result = _carImageDal.GetAll();
-            if (result != null)
-            {
-                return new SuccessDataResult<List<CarImage>>(result.ToList());
-            }
-            return null;
-        }
-
-
-        public IDataResult<CarImage> GetCarImageById(int id)
-        {
-
             var result = _carImageDal.Get(x => x.Id == id);
             if (result != null)
             {
-                return new SuccessDataResult<CarImage>(result);
+                return new ErrorResult(Messages.ActionMessages.UnsuccedUpdate);
             }
-            return null;
-
+            return new SuccessResult();
         }
-
-        public IResult Update(CarImage carImage)
-        {
-            var IsExist = BusinessRulesValidator.Run(CheckExistCarImage(carImage.Id));
-
-            if (IsExist.Success == true)
-            {
-                _carImageDal.Update(carImage);
-                return new SuccessResult(Messages.ActionMessages.SuccedUpdate);
-            }
-            return new ErrorResult(Messages.ActionMessages.UnsuccedUpdate);
-        }
-
-
-        /// <summary>
-        /// This function count car images. 16.04.2022
-        /// </summary>
-        /// <param name="CarId"></param>
-        /// <returns></returns>
-        public IResult CheckCarImageCount(CarImage carImage)
-        {
-            var carImageCount = _carImageDal.CarImageCount(carImage);
-            if (carImageCount == 5)
-            {
-                return new ErrorDataResult<CarImage>("Araç Resmi En Fazla 5 Adet Olabilir");
-            }
-            return null;
-        }
-
-        //public IDataResult<List<CarImage>> ShowDefaultImageOfCar(CarImage carImage)
-        //{
-        //    var result = BusinessRules.Run(CheckCarImageCount(carImage));
-        //    if (result == null)
-        //    {
-        //        ShowDefaultImage();   
-        //    }
-        //    return null;
-        //}
-
-        public IDataResult<CarImage> CheckExistCarImage(int id)
-        {
-            var isExist = _carImageDal.Get(x=>x.Id == id);
-            if (isExist == null)
-            {
-                return new ErrorDataResult<CarImage>();
-            }
-            return new SuccessDataResult<CarImage>();
-        }
-
-        //public IDataResult<CarImage> ShowDefaultImage()
-        //{
-        //   var defaultImage =  _carImageDal.GetDefaultCarImage();
-        //    return new SuccessDataResult<CarImage>(defaultImage.Data);
-        //}
     }
 }

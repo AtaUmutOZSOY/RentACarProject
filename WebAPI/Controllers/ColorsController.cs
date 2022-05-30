@@ -44,32 +44,32 @@ namespace WebAPI.Controllers
             var result = _colorService.Update(color);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
 
             }
             return BadRequest(result.Message);
          }
-        [HttpGet("GetColorList")]
+        [HttpGet("getAllColors")]
         public IActionResult GetColors()
         {
             var result = _colorService.GetAllColor();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return BadRequest();
             
         }
         
-        [HttpGet("GetColorByColorId")]
-        public IActionResult GetColorByColorId(int id)
-        {
-            var result = _colorService.GetColorByColorId(id);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-            return BadRequest(result.Message);
-        }
+        //[HttpGet("GetColorByColorId")]
+        //public IActionResult GetColorByColorId(int id)
+        //{
+        //    var result = _colorService.GetColorByColorId(id);
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result.Message);
+        //}
     }
 }

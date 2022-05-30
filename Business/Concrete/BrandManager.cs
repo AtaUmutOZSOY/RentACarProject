@@ -1,111 +1,44 @@
 ﻿using Business.Abstract;
-using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.BusinessRules;
-using Business.ValidationRules.BusinessRules.Abstract;
-using Business.ValidationRules.FluentValidation;
 
-using Core.Aspects.Autofac.Validation;
-using Core.Entity.DTOs;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using FluentValidation;
-using System;
+using Entity.DTOs.BrandDTOs;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class BrandManager : IBrandService
+    public class BrandManager : BaseManager<Brand>,IBrandService
     {
         IBrandDal _brandDal;
-        IBrandBusinessRules _brandBusinessRules;
-        public BrandManager(IBrandDal brandDal, IBrandBusinessRules brandBusinessRules)
+       
+        public BrandManager(IBrandDal brandDal)
         {
             _brandDal = brandDal;
-            _brandBusinessRules = brandBusinessRules;   
+           
         }
-        public BrandManager()
-        {
 
-        }
-        
-    
-
-        
-        public IResult Add(BrandDTO brandDto)
+        public override IResult Add(Brand entity)
         {
-            var brand = new Brand();
-            brand.BrandName = brandDto.BrandName;
-            var IsExistBrand = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brand.BrandName));
-            if (IsExistBrand == null)
-            {   
-                _brandDal.Add(brand);
-                return new SuccessResult(Messages.ActionMessages.SuccedAdd);
-
-            }
-            return new ErrorResult(Messages.ActionMessages.UnsucceddAdd);
-        }
-        
-        //[ValidationAspect(typeof(BrandValidator))]
-        public IResult Delete(BrandDTO brandDto)
-        {
-            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrand(brandDto.BrandName));
-            var brand = new Brand();
-            brand.BrandName = brandDto?.BrandName;
-            if (!isBrandExist.Success)
+            var result = BusinessRulesValidator.Run(CheckExistBrand(entity.BrandId));
+            if (result.Success)
             {
-                _brandDal.Delete(brand);
-                return new SuccessResult(Messages.ActionMessages.SuccedRemove);
+                return base.Add(entity);
             }
-            return new ErrorResult(Messages.ActionMessages.NotExist);
+            return new ErrorResult(Messages.ActionMessages.AlreadyExist);
         }
 
-
-
-        [ValidationAspect(typeof(BrandValidator))]
-
-        //[SecuredOperation("Brand.add,admin")]
-
-        public IResult Update(BrandDTO brandDto)
+        public IResult CheckExistBrand(int brandId)
         {
-            var isBrandExist = BusinessRulesValidator.Run(_brandBusinessRules.CheckExistBrandForUpdate(brandDto.BrandName));
-            if (isBrandExist.Success)
+            var result = _brandDal.Get(x=>x.BrandId == brandId);
+            if (result != null)
             {
-                var brand = new Brand();
-                brand.BrandName = brandDto.BrandName;
-                _brandDal.Update(brand);
-                return new SuccessResult(Messages.ActionMessages.SuccedUpdate);
+                return new ErrorResult();
             }
-            return new ErrorResult(Messages.ActionMessages.UnsuccedUpdate);
+            return new SuccessResult();
         }
-
-        
-        public IDataResult<List<Brand>> GetAllBrands()
-        {
-            var brandList = _brandDal.GetAll();
-            if (brandList == null)
-            {
-                return null;
-            }
-            return new SuccessDataResult<List<Brand>>(brandList);
-        }
-
-
-        //public IDataResult<Brand> GetBrandByBrandId(int id)
-        //{
-        //    var brandById =  _brandDal.Get(x=>x.BrandId == id);
-        //    if (brandById != null)
-        //    {
-        //        return new SuccessDataResult<Brand>(brandById);
-        //    }
-        //    return null;
-        //}
-
     }
 }

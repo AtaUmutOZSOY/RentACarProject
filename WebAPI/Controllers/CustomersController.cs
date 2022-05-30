@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _customerService = customerService;
         }
 
-        [HttpPost("AddBrand")]
+        [HttpPost("addCustomer")]
         public IActionResult Add(Customer customer)
         {
             var result = _customerService.Add(customer);
@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
 
 
 
-        [HttpDelete("DeleteRental")]
+        [HttpDelete("deleteCustomer")]
         public IActionResult Delete(Customer customer)
         {
             var result = _customerService.Delete(customer);
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         
         
 
-        [HttpPost("UpdateRentals")]
+        [HttpPost("updateCustomer")]
         public IActionResult Update(Customer customer)
         {
             var result = _customerService.Update(customer);
@@ -58,11 +58,11 @@ namespace WebAPI.Controllers
          
          
 
-        [HttpGet("GetAllRentals")]
+        [HttpGet("getAllCustomers")]
 
         public IActionResult GetAll()
         {
-            var result = _customerService.GetAllColor();
+            var result = _customerService.GetAllCustomers();
             if (result.Success)
             {
                 return Ok(result);
@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
          
 
 
-        [HttpGet("GetRentalByRentalId")]
+        [HttpGet("getCustomerByCustomerId")]
 
         public IActionResult Ge(int id)
         {

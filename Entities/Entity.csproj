@@ -8,4 +8,10 @@
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\CarImageDTOs\" />
+    <Folder Include="DTOs\ColorDTOs\" />
+    <Folder Include="DTOs\CustomerDTOs\" />
+  </ItemGroup>
+
 </Project>

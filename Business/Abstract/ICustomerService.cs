@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICustomerService
+    public interface ICustomerService: IBaseService<Customer>
     {
-        IResult Add(Customer customer);
-        IResult Delete(Customer customer);
-        IResult Update(Customer customer);
-        IDataResult<List<Customer>> GetAllColor();
-        IDataResult<Customer> GetCustomerByCustomerId(int id);
+        
     }
 }

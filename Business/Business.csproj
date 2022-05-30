@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Entities\Entity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ValidationRules\BusinessRules\Abstract\" />
+    <Folder Include="ValidationRules\BusinessRules\Concrete\" />
+  </ItemGroup>
+
 </Project>

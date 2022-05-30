@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.ValidationRules.BusinessRules.Abstract
+namespace Entity.DTOs.BrandDTOs
 {
-    public interface ICarBusinessRules
+    public class BrandDtoForDelete
     {
+        public string BrandName { get; set; }
     }
 }

@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         
         public IActionResult GetUsers()
         {
-            var result = _userService.GetAllUsers();
+            var result = _userService.GetAll();
             
             if (result.Data != null)
             {
@@ -85,15 +85,20 @@ namespace WebAPI.Controllers
         [HttpGet("GetUserById")]
         public  IActionResult GetUserById(int id)
         {
-            var result = _userService.GetUserById(id);
-            if (result.Success)
+            var result = _userService.GetAll();
+            foreach (var user in result.Data)
             {
-                return Ok(result.Data);
+                if (user.Id == id)
+                {
+                    return Ok(result.Data);
+                }
             }
             return BadRequest(result.Message);
         }
     }
 }
+
+            
             
             
             

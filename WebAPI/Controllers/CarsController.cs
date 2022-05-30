@@ -53,13 +53,13 @@ namespace WebAPI.Controllers
             }
         
         }
-        [HttpGet("GetAllCars")]
+        [HttpGet("getAllCars")]
         public IActionResult GetAll()
         {
             var result = _carService.GetAllCars();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
 
             }
             else
@@ -67,18 +67,26 @@ namespace WebAPI.Controllers
                 return BadRequest(result.Message);
             }
         }
-        [HttpGet("GetCarByCarId")]
-        public IActionResult GetCarById(int id)
+        [HttpGet("getCarDetailByCarId")]       
+        public IActionResult GetCarDetail(int id)
         {
-            var result = _carService.GetCarByCarId(id);
+            var result = _carService.GetCarDetailByCarId(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            else
+            return NotFound(result);
+        }
+
+        [HttpGet("getCarDetails")]
+        public IActionResult GetCarDetails()
+        {
+            var result = _carService.GetCarDetails();
+            if (result.Success)
             {
-                return BadRequest(result.Message);
+                return Ok(result);
             }
+            return NotFound(result);
         }
     }
 }

@@ -1,10 +1,6 @@
 ﻿using Business.Abstract;
-using Business.BusinessAspects.Autofac;
-using Core.Entity.DTOs;
-using Core.Utilities.Results.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace WebAPI.Controllers
 {
@@ -20,7 +16,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("AddBrand")]
-        public IActionResult Add(BrandDTO brand)
+        public IActionResult Add(Brand brand)
         {
             var result = _brandService.Add(brand);
             if (result.Success)
@@ -31,9 +27,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("DeleteBrand")]
-        public IActionResult Delete(BrandDTO brandDto)
+        public IActionResult Delete(Brand brand)
         {
-            var result = _brandService.Delete(brandDto);
+            var result = _brandService.Delete(brand);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -41,9 +37,9 @@ namespace WebAPI.Controllers
             return NotFound(result.Message);
         }
         [HttpPost("UpdateBrands")]
-        public IActionResult Update(BrandDTO brandDto)
+        public IActionResult Update(Brand brand)
         {
-            var result = _brandService.Update(brandDto);
+            var result = _brandService.Update(brand);
             if (result.Success)
             {
                 return Ok(result.Message);
@@ -51,14 +47,14 @@ namespace WebAPI.Controllers
             return NotFound(result.Message);
         }
 
-        [HttpGet("GetAllBrands")]
+        [HttpGet("getall")]
 
        public IActionResult GetAll() 
         {
-           var result =  _brandService.GetAllBrands();
+           var result =  _brandService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return null;
 
