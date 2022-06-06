@@ -1,5 +1,4 @@
 ﻿using Core.Utilities.Results.Abstract;
-using Core.Utilities.Results.Concrete;
 using Entities.Concrete;
 using Entity.DTOs.CarDTOs;
 using System;
@@ -10,9 +9,13 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICarService: IBaseService<Car>
+    public interface ICarService
     {
-       
-
+        IResult Add(Car car);
+        IResult Update(Car car);
+        IResult Delete(Car car);
+        IDataResult<List<Car>> GetAll();
+        IDataResult<Car> GetByCarId(int id);
+        IDataResult<List<CarDetailDto>> GetAllCarsWithDetail();
     }
 }

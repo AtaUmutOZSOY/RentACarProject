@@ -47,9 +47,9 @@ namespace WebAPI.Controllers
             return NotFound(result.Message);
         }
 
-        [HttpGet("getall")]
+        [HttpGet("GetAllBrands")]
 
-       public IActionResult GetAll() 
+        public IActionResult GetAllBrand() 
         {
            var result =  _brandService.GetAll();
             if (result.Success)

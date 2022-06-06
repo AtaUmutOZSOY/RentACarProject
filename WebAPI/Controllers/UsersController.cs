@@ -37,37 +37,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete("DeleteUser")]
-        public IActionResult DeleteUser(User user)
-        {
-            var result = _userService.Delete(user);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-            return BadRequest(result.Message);
-        }
-            
-            
-
-            
-        
-        [HttpPost("UpdateUser")]
-         public IActionResult UpdateUser(User user)
-        {
-            var result = _userService.Update(user);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-            return BadRequest(result.Message);
-        }
-         
-         
-         
-
         [HttpGet("GetAllUsers")]
-        
         public IActionResult GetUsers()
         {
             var result = _userService.GetAll();
@@ -82,6 +52,7 @@ namespace WebAPI.Controllers
             }
             
         }
+
         [HttpGet("GetUserById")]
         public  IActionResult GetUserById(int id)
         {
@@ -97,6 +68,15 @@ namespace WebAPI.Controllers
         }
     }
 }
+
+            
+
+            
+        
+     
+         
+         
+         
 
             
             

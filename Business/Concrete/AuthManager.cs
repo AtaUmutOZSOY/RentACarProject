@@ -25,7 +25,7 @@ namespace Business.Concrete
        
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
-            var IsExistValidation = BusinessRulesValidator.Run(CheckUserExist(userForRegisterDto.Email));
+            var IsExistValidation = BusinessRulesValidator.Run(CheckUserExistForRegister(userForRegisterDto.Email));
 
             if (IsExistValidation == null)
             {
@@ -47,28 +47,33 @@ namespace Business.Concrete
             return new ErrorDataResult<User>(IsExistValidation.Message);
         }
 
-        private IResult CheckUserExist(string email)
+        private IResult CheckUserExistForRegister(string email)
         {
-            var users = _userService.GetAll();
-
-            foreach (var user in users.Data)
+            var user = _userService.GetUser(email);
+            if (user.Data == null)
             {
-                if (user.Email == email)
-                {
-                    return new ErrorResult(Messages.UserMassages.UserAlreadyExist);
-                }
+                return new SuccessResult();
             }
-            return new SuccessResult();   
-            
+            return new ErrorResult();
+        }
+
+        private IResult CheckUserExistForLogin(string email)
+        {
+            var user = _userService.GetUser(email);
+            if (user.Data != null)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             
-            var isUserExist = BusinessRulesValidator.Run(CheckUserExist(userForLoginDto.Email));
+
             var getExistUser = _userService.GetUser(userForLoginDto.Email);
             
-            if (!isUserExist.Success)
+            if (!getExistUser.Success)
             {   
                 return new ErrorDataResult<User>(Messages.UserMassages.UserNotFound);
             }

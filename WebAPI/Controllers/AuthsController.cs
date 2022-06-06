@@ -17,12 +17,12 @@ namespace WebAPI.Controllers
         public IActionResult Login(UserForLoginDto userForLoginDto)
         {
             var usertoLogin = _authService.Login(userForLoginDto);
-            var result = _authService.CreateAccessToken(usertoLogin.Data);
             if (usertoLogin.Success)
             {
+                var result = _authService.CreateAccessToken(usertoLogin.Data);
                 return Ok(result);
             }
-            return NotFound(result);
+            return NotFound();
         }
 
         [HttpPost("register")]

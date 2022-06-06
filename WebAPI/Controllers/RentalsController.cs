@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -9,46 +10,73 @@ namespace WebAPI.Controllers
     public class RentalsController : ControllerBase
     {
         IRentalService _rentalService;
+
         public RentalsController(IRentalService rentalService)
         {
             _rentalService = rentalService;
         }
-        [HttpPost("addRental")]
-        public IActionResult Add(Rental rental)
+
+        [HttpPost("AddRental")]
+        public IActionResult AddRental(Rental rental)
         {
             var result = _rentalService.Add(rental);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result.Message);
         }
-            
-            
-            
-
-        [HttpDelete("deleteRental")]
-        public IActionResult Delete(Rental rental)
+        [HttpDelete("DeleteRental")]
+        public IActionResult DeleteRental(Rental rental)
         {
             var result = _rentalService.Delete(rental);
             if (result.Success)
             {
-                return Ok("Silme Başarılı");
+                return Ok(result);
             }
-            return BadRequest();
-         
+            return BadRequest(result.Message);
         }
-         
-         
-        [HttpPost("updateRental")]
-        public IActionResult Update(Rental rental)
+        [HttpPost("UpdateRental")]
+        public IActionResult UpdateRental(Rental rental)
         {
             var result = _rentalService.Update(rental);
             if (result.Success)
             {
                 return Ok(result.Message);
             }
-            return NotFound();
-        }        
+            return NotFound(result.Message);
+        }
+        [HttpGet("GetAllRentals")]
+        public IActionResult GetAllRentals()
+        {
+            var result = _rentalService.GetAllRental();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return null;
+        }
+        [HttpGet("GetRentalById")]
+        public IActionResult GetRentalById(int id)
+        {
+            var result = _rentalService.GetRentalById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return null;
+        }
+        [HttpGet("GetRentalsWithDetail")]
+        public IActionResult GetRentalsWithDetail()
+        {
+            var result = _rentalService.GetRentalDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return null;
+        }
+
     }
+
 }

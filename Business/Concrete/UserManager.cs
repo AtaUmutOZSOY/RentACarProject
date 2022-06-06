@@ -1,5 +1,4 @@
 ﻿using Business.Abstract;
-using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.BusinessRules;
 using Core.Entity.Concrete;
@@ -14,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class UserManager : BaseManager<User>, IUserService
+    public class UserManager : IUserService
     {
         IUserDal _userDal;
         public UserManager(IUserDal userDal)
@@ -22,36 +21,51 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        public IResult Add(User user)
         {
-            var existUser = BusinessRulesValidator.Run(CheckExistUser(user.Id));
-            if (existUser != null)
+            var result = BusinessRulesValidator.Run(CheckExistUser(user.Email));
+            if (result == null)
             {
-                var claims = _userDal.GetClaims(user);
-                return new SuccessDataResult<List<OperationClaim>>(claims.ToList());
+                _userDal.Add(user);
+                return new SuccessResult(Messages.ActionMessages.SuccedAdd);
+            }
+            return new ErrorResult(Messages.UserMassages.UserAlreadyExist);
+        }
+
+        public IDataResult<List<User>> GetAll()
+        {
+            var users = _userDal.GetAll();
+            if (users != null)
+            {
+                return new SuccessDataResult<List<User>>(users);
             }
             return null;
         }
+
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            var claims = _userDal.GetClaims(user);
+            if (claims != null)
+            {
+                return new SuccessDataResult<List<OperationClaim>>(claims);
+            }
+            return null;
+        }
+
 
         public IDataResult<User> GetUser(string email)
         {
-            var user = _userDal.Get(x=>x.Email == email);
-            if (user != null )
-            {
-                return new SuccessDataResult<User>(user);
-            }
-            return null;
+            var user = _userDal.Get(x => x.Email == email);
+            return new SuccessDataResult<User>(user);
         }
-
-        public IResult CheckExistUser(int id)
+        public IResult CheckExistUser(string email)
         {
-            var result = _userDal.Get(x => x.Id == id);
+            var result = _userDal.Get(x => x.Email == email);
             if (result != null)
             {
                 return new ErrorResult();
             }
             return new SuccessResult();
         }
-
     }
 }

@@ -40,7 +40,7 @@ namespace WebAPI
             services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
-            {
+            {   
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();

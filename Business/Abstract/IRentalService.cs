@@ -1,6 +1,5 @@
 ﻿using Core.Utilities.Results.Abstract;
 using Entity.Concrete;
-using Entity.DTOs.CarDTOs;
 using Entity.DTOs.RentalDTOs;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,14 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IRentalService: IBaseService<Rental>
+    public interface IRentalService
     {
-        
+        IResult Add(Rental rental);
+        IResult Delete(Rental rental);
+        IResult Update(Rental rental);
+        IDataResult<List<Rental>> GetAllRental();
+        IDataResult<Rental> GetRentalById(int id);
+        IDataResult<List<CarRentalDetailDto>> GetRentalDetails();
+
     }
 }
